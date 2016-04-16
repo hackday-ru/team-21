@@ -15,14 +15,23 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eftimoff.patternview.PatternView;
+import com.nightonke.blurlockview.BlurLockView;
+import com.nightonke.blurlockview.Directions.HideType;
+import com.nightonke.blurlockview.Directions.ShowType;
+import com.nightonke.blurlockview.Eases.EaseType;
+import com.nightonke.blurlockview.Password;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BlurLockView.OnPasswordInputListener,
+        BlurLockView.OnLeftButtonClickListener{
 
     private static final String FIRST_START = "first_start3";
 
@@ -32,7 +41,9 @@ public class MainActivity extends BaseActivity {
     private CounterClass timer;
     private Animation animationFadeIn;
     private Animation animationFadeOut;
-    private FrameLayout timerContainer;
+
+    private boolean stateRunning = false;
+    private Button sosButton;
 
     @Override
     int getLayoutResource() {
@@ -42,16 +53,33 @@ public class MainActivity extends BaseActivity {
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
         launchIntoActivityIfFirstLaunch();
-        initTimerContainer();
         initTimer();
         initSosButton();
-        initCancelButton();
         initAnimations();
-
+        initBlurImageView();
     }
 
-    private void initTimerContainer(){
-        timerContainer = (FrameLayout) findViewById(R.id.time_container);
+    private BlurLockView blurLockView;
+
+    private void initBlurImageView(){
+        blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
+        blurLockView.setBlurredView(findViewById(R.id.background_image));
+        blurLockView.setCorrectPassword("1234");
+        blurLockView.setTitle("Title");
+        blurLockView.setLeftButton("Cancel");
+        blurLockView.setRightButton("");
+        blurLockView.setType(getPasswordType(), false);
+        blurLockView.setOnLeftButtonClickListener(this);
+        blurLockView.setOnPasswordInputListener(this);
+        hidePinPad();
+    }
+
+    private Password getPasswordType() {
+        if ("PASSWORD_NUMBER".equals(getIntent().getStringExtra("PASSWORD_TYPE")))
+            return Password.NUMBER;
+        else if ("PASSWORD_NUMBER".equals(getIntent().getStringExtra("PASSWORD_TYPE")))
+            return Password.TEXT;
+        return Password.NUMBER;
     }
 
     private void initAnimations() {
@@ -83,24 +111,31 @@ public class MainActivity extends BaseActivity {
         timer = new CounterClass(DURATION_MILLIS, 1000);
     }
 
-    private void initSosButton() {
-        findViewById(R.id.button_sos).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timerContainer.startAnimation(animationFadeIn);
-                timerContainer.setVisibility(View.VISIBLE);
-                timer.start();
-            }
-        });
+    private void showPinPad(){
+        blurLockView.show(
+                getIntent().getIntExtra("SHOW_DURATION", 0),
+                getShowType(getIntent().getIntExtra("SHOW_DIRECTION", 0)),
+                getEaseType(getIntent().getIntExtra("SHOW_EASE_TYPE", 30)));
+        blurLockView.bringToFront();
+        sosButton.setVisibility(View.INVISIBLE);
     }
 
-    private void initCancelButton() {
-        findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+    private void initSosButton() {
+        sosButton = (Button)findViewById(R.id.button_sos);
+        sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timer.cancel();
-                timerContainer.startAnimation(animationFadeOut);
-                timerContainer.setVisibility(View.INVISIBLE);
+
+                if (!stateRunning) {
+
+                    timerText.startAnimation(animationFadeIn);
+                    timerText.setVisibility(View.VISIBLE);
+                    timer.start();
+                    stateRunning = true;
+                    sosButton.setText("X");
+                } else {
+                    showPinPad();
+                }
             }
         });
     }
@@ -109,7 +144,7 @@ public class MainActivity extends BaseActivity {
         ContactsEntity contactsEntity = SafetyApplication.getContactsStorageService().loadContactsFromStorage();
         List<ContactWithPhoneEntity> contacts = contactsEntity.getContactWithPhoneEntityList();
         for (ContactWithPhoneEntity c : contacts) {
-            sendSMSMessage(c.getContactNumber(), SafetyApplication.getContactsStorageService().getMessage());
+            //sendSMSMessage(c.getContactNumber(), SafetyApplication.getContactsStorageService().getMessage());
         }
         return contacts.size();
     }
@@ -145,6 +180,104 @@ public class MainActivity extends BaseActivity {
         return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
     }
 
+    @Override
+    public void onClick() {
+        hidePinPad();
+    }
+
+
+    @Override
+    public void correct(String inputPassword) {
+        hidePinPad();
+        timer.cancel();
+        timerText.setVisibility(View.INVISIBLE);
+        stateRunning = false;
+        sosButton.setText("SOS");
+    }
+
+    private void hidePinPad(){
+        blurLockView.hide(
+                getIntent().getIntExtra("HIDE_DURATION", 0),
+                getHideType(getIntent().getIntExtra("HIDE_DIRECTION", 0)),
+                getEaseType(getIntent().getIntExtra("HIDE_EASE_TYPE", 30)));
+        sosButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void incorrect(String inputPassword) {
+        Toast.makeText(this,
+                "Incorrect",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private HideType getHideType(int p) {
+        HideType hideType = HideType.FROM_TOP_TO_BOTTOM;
+        switch (p) {
+            case 0: hideType = HideType.FROM_TOP_TO_BOTTOM; break;
+            case 1: hideType = HideType.FROM_RIGHT_TO_LEFT; break;
+            case 2: hideType = HideType.FROM_BOTTOM_TO_TOP; break;
+            case 3: hideType = HideType.FROM_LEFT_TO_RIGHT; break;
+            case 4: hideType = HideType.FADE_OUT; break;
+        }
+        return hideType;
+    }
+
+    private EaseType getEaseType(int p) {
+        EaseType easeType = EaseType.Linear;
+        switch (p) {
+            case 0: easeType = EaseType.EaseInSine; break;
+            case 1: easeType = EaseType.EaseOutSine; break;
+            case 2: easeType = EaseType.EaseInOutSine; break;
+            case 3: easeType = EaseType.EaseInQuad; break;
+            case 4: easeType = EaseType.EaseOutQuad; break;
+            case 5: easeType = EaseType.EaseInOutQuad; break;
+            case 6: easeType = EaseType.EaseInCubic; break;
+            case 7: easeType = EaseType.EaseOutCubic; break;
+            case 8: easeType = EaseType.EaseInOutCubic; break;
+            case 9: easeType = EaseType.EaseInQuart; break;
+            case 10: easeType = EaseType.EaseOutQuart; break;
+            case 11: easeType = EaseType.EaseInOutQuart; break;
+            case 12: easeType = EaseType.EaseInQuint; break;
+            case 13: easeType = EaseType.EaseOutQuint; break;
+            case 14: easeType = EaseType.EaseInOutQuint; break;
+            case 15: easeType = EaseType.EaseInExpo; break;
+            case 16: easeType = EaseType.EaseOutExpo; break;
+            case 17: easeType = EaseType.EaseInOutExpo; break;
+            case 18: easeType = EaseType.EaseInCirc; break;
+            case 19: easeType = EaseType.EaseOutCirc; break;
+            case 20: easeType = EaseType.EaseInOutCirc; break;
+            case 21: easeType = EaseType.EaseInBack; break;
+            case 22: easeType = EaseType.EaseOutBack; break;
+            case 23: easeType = EaseType.EaseInOutBack; break;
+            case 24: easeType = EaseType.EaseInElastic; break;
+            case 25: easeType = EaseType.EaseOutElastic; break;
+            case 26: easeType = EaseType.EaseInOutElastic; break;
+            case 27: easeType = EaseType.EaseInBounce; break;
+            case 28: easeType = EaseType.EaseOutBounce; break;
+            case 29: easeType = EaseType.EaseInOutBounce; break;
+            case 30: easeType = EaseType.Linear; break;
+        }
+        return easeType;
+    }
+
+    private ShowType getShowType(int p) {
+        ShowType showType = ShowType.FROM_TOP_TO_BOTTOM;
+        switch (p) {
+            case 0: showType = ShowType.FROM_TOP_TO_BOTTOM; break;
+            case 1: showType = ShowType.FROM_RIGHT_TO_LEFT; break;
+            case 2: showType = ShowType.FROM_BOTTOM_TO_TOP; break;
+            case 3: showType = ShowType.FROM_LEFT_TO_RIGHT; break;
+            case 4: showType = ShowType.FADE_IN; break;
+        }
+        return showType;
+    }
+
+
+    @Override
+    public void input(String inputPassword) {
+
+    }
+
     public class CounterClass extends CountDownTimer {
         public CounterClass(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -153,21 +286,23 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onFinish() {
             int count = sendMessagesToAllRecipients();
-            timerContainer.startAnimation(animationFadeOut);
-            timerContainer.setVisibility(View.INVISIBLE);
+            timerText.startAnimation(animationFadeOut);
+            timerText.setVisibility(View.INVISIBLE);
             String msg = String.format("Message sent to %s recipients", count);
             Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+            stateRunning = false;
+            sosButton.setText("SOS");
         }
 
         @Override
         public void onTick(long millisUntilFinished) {
             long millis = millisUntilFinished;
             String hms = String.format(
-                    "%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millis),
+                    "%02d:%02d",
                     TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                     TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
             timerText.setText(hms);
+            blurLockView.setTitle(hms);
         }
     }
 

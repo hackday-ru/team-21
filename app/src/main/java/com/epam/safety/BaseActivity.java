@@ -11,13 +11,9 @@ import android.view.View;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
-
-
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -43,16 +39,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String MENU_HOME = "Home";
     private static final String MENU_SETTINGS = "Settings";
-    private static final String MENU_EDIT_CONTACTS = "Edit contacts";
-    private static final String MENU_EDIT_MESSAGE = "Edit message";
+    private static final String MENU_EDIT_CONTACTS = "Contacts";
+    private static final String MENU_EDIT_MESSAGE = "Message";
 
-    private void initNavigationDrawer(){
+    private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         //set the back arrow in the toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName(MENU_HOME).withIcon(FontAwesome.Icon.faw_home);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName(MENU_SETTINGS).withIcon(FontAwesome.Icon.faw_cog);
@@ -95,16 +90,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-
-    private void setSelectionAtPosition(int position){
+    private void setSelectionAtPosition(int position) {
         result.setSelectionAtPosition(position);
     }
 
-    public void setSettingsSelected(){
+    public void setSettingsSelected() {
         setSelectionAtPosition(POSITION_SETTINGS);
     }
 
-    public void setEditContactsSelected(){
+    public void setEditContactsSelected() {
         setSelectionAtPosition(POSITION_EDIT_CONTACTS);
     }
 
@@ -112,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSelectionAtPosition(POSITION_EDIT_MESSAGE);
     }
 
-    private void startActivityWithDelay(final Class<?> clazz){
+    private void startActivityWithDelay(final Class<?> clazz) {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -123,7 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }, 250);
     }
 
-    public void setToolbarText(String text){
+    public void setToolbarText(String text) {
         toolbar.setTitle(text);
     }
 }

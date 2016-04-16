@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_below="@id/editText"
-                    android:background="@drawable/search_form_button"
+                    android:background="@drawable/change_message_button"
                     android:text="Save"
                     android:textColor="@color/white"
                     android:textSize="14dp" />
