@@ -1,22 +1,17 @@
 package com.epam.safety;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.List;
 
@@ -35,7 +30,7 @@ public class MainActivity extends BaseActivity {
         initSosButton();
     }
 
-    private void launchIntoActivityIfFirstLaunch(){
+    private void launchIntoActivityIfFirstLaunch() {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,16 +49,16 @@ public class MainActivity extends BaseActivity {
         t.start();
     }
 
-    private void initSosButton(){
+    private void initSosButton() {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ContactsEntity contactsEntity = SafetyApplication.getContactsStorageService().loadContactsFromStorage();
                 List<ContactWithPhoneEntity> contacts = contactsEntity.getContactWithPhoneEntityList();
-                for (ContactWithPhoneEntity c : contacts){
-                    // send message to all contacts
+                for (ContactWithPhoneEntity c : contacts) {
+                    sendSMSMessage(c.getContactNumber(), SafetyApplication.getContactsStorageService().getMessage());
                 }
-                sendSMSMessage("+79117218627", SafetyApplication.getContactsStorageService().getMessage());
+
             }
         });
     }
@@ -71,13 +66,32 @@ public class MainActivity extends BaseActivity {
     protected void sendSMSMessage(String phone, String message) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phone, null, message, null, null);
+            smsManager.sendTextMessage(phone, null, concatMessageWithLocation(message, getLastKnownLocationAsString()), null, null);
             Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    private String concatMessageWithLocation(String message, String location) {
+        return message + "\n" + location;
+    }
+
+    private String getLastKnownLocationAsString() {
+        Location location = getLastKnownLocation();
+        if (location == null) {
+            return "";
+        }
+        return String.format("http://maps.google.com/maps?q=%s,%s", location.getLatitude(), location.getLongitude());
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        }
+        return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
     }
 
 }
