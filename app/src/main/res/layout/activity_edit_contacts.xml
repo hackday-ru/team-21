@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Main activity"
+            android:text="Edit contacts"
             android:textSize="16sp" />
     </FrameLayout>
 </RelativeLayout>
