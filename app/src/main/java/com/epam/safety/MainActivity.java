@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity {
                 for (ContactWithPhoneEntity c : contacts){
                     // send message to all contacts
                 }
-                sendSMSMessage("+79117218627", "Privet");
+                sendSMSMessage("+79117218627", SafetyApplication.getContactsStorageService().getMessage());
             }
         });
     }

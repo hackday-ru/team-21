@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-public class EditContactsActivity extends BaseActivity {
+public class EditContactsActivity extends BaseActivity implements View.OnClickListener{
 
     private static final int PICK_CONTACT = 1;
     private static final String PREF_CONTACTS_LIST = "contactsList";
@@ -54,7 +54,7 @@ public class EditContactsActivity extends BaseActivity {
     private void initRecyclerView() {
         recyclerView = (RecyclerViewWithEmptyView) findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(contactsAdapter = new ContactsAdapter(this));
+        recyclerView.setAdapter(contactsAdapter = new ContactsAdapter(this, this));
         NestedScrollView nestedScrollView= (NestedScrollView)findViewById(R.id.scroll);
         recyclerView.setEmptyView(nestedScrollView);
     }
@@ -109,7 +109,7 @@ public class EditContactsActivity extends BaseActivity {
     }
 
     public void reinitAdapter() {
-        contactsAdapter = new ContactsAdapter(this);
+        contactsAdapter = new ContactsAdapter(this, this);
         contactsAdapter.clearItems();
         contactsAdapter.setItems(contactsEntity.getContactWithPhoneEntityList());
         recyclerView.setAdapter(contactsAdapter);
@@ -124,5 +124,10 @@ public class EditContactsActivity extends BaseActivity {
                 .commit();
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        ContactWithPhoneEntity entity = (ContactWithPhoneEntity)v.getTag();
     }
 }

@@ -9,7 +9,7 @@ public class SafetyApplication extends Application {
 
     private static SafetyApplication singleton;
 
-    private ContactsStorageService contactsStorageService;
+    private SharedPreferencesService sharedPreferencesService;
 
     public static SafetyApplication getInstance() {
         return singleton;
@@ -20,11 +20,11 @@ public class SafetyApplication extends Application {
         super.onCreate();
         singleton = this;
 
-        contactsStorageService = new ContactsStorageServiceImpl(this);
+        sharedPreferencesService = new SharedPreferencesServiceImpl(this);
     }
 
-    public static ContactsStorageService getContactsStorageService(){
-        return getInstance().contactsStorageService;
+    public static SharedPreferencesService getContactsStorageService(){
+        return getInstance().sharedPreferencesService;
     }
 
 }

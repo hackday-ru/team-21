@@ -13,8 +13,9 @@ public class ContactsAdapter extends BaseListAdapter<ContactWithPhoneEntity, Con
 
     private View.OnClickListener onClickListener;
 
-    public ContactsAdapter(Context context) {
+    public ContactsAdapter(Context context,  View.OnClickListener onClickListener) {
         super(context);
+        this.onClickListener = onClickListener;
     }
 
     @Override
@@ -24,10 +25,15 @@ public class ContactsAdapter extends BaseListAdapter<ContactWithPhoneEntity, Con
     }
 
     @Override
-    protected void bind(final ContactWithPhoneEntity contact, ContactView view, ViewHolder<ContactView> holder) {
+    protected void bind(final ContactWithPhoneEntity contact, ContactView view, final ViewHolder<ContactView> holder) {
         view.setData(contact);
         view.setTag(contact);
-        view.setOnClickListener(this);
+        view.setOnRemoveListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeItem(holder.getAdapterPosition());
+            }
+        });
     }
 
 
