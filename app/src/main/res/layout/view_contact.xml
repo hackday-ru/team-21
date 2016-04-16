@@ -36,8 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="72dp"
-        android:background="@color/divider"/>
+        android:background="@color/grey_37474F"/>
     <ImageView
         android:id="@+id/remove_button"
         android:layout_width="24dp"

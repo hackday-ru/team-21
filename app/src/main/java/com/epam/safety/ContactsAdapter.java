@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 /**
  * Created by dbychkov on 16.04.16.
  */
-public class ContactsAdapter extends BaseListAdapter<ContactWithPhoneEntity, ContactView> implements View.OnClickListener{
+public class ContactsAdapter extends BaseListAdapter<ContactWithPhoneEntity, ContactView> {
 
-    private View.OnClickListener onClickListener;
+    private ItemRemovedListener itemRemovedListener;
 
-    public ContactsAdapter(Context context,  View.OnClickListener onClickListener) {
+    public ContactsAdapter(Context context, ItemRemovedListener itemRemovedListener) {
         super(context);
-        this.onClickListener = onClickListener;
+        this.itemRemovedListener = itemRemovedListener;
     }
 
     @Override
@@ -32,22 +32,12 @@ public class ContactsAdapter extends BaseListAdapter<ContactWithPhoneEntity, Con
             @Override
             public void onClick(View v) {
                 removeItem(holder.getAdapterPosition());
+                itemRemovedListener.remove();
             }
         });
     }
 
-
-
-    public void setOnCLickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
-    }
-
-    public View.OnClickListener getOnClickListener() {
-        return onClickListener;
-    }
-
-    @Override
-    public void onClick(View view) {
-        onClickListener.onClick(view);
+    public interface ItemRemovedListener {
+        void remove();
     }
 }

@@ -16,7 +16,17 @@ public class EditMessageActivity extends BaseActivity {
 
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
-        editText = (EditText)findViewById(R.id.editText);
+        initViews();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        //setEditMessageSelected();
+    }
+
+    private void initViews() {
+        editText = (EditText) findViewById(R.id.editText);
         editText.setText(SafetyApplication.getContactsStorageService().getMessage());
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
