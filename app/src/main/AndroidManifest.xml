@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MaterialDrawerTheme">
+            android:theme="@style/MaterialDrawerTheme.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,13 +23,13 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/MaterialDrawerTheme" />
+            android:theme="@style/MaterialDrawerTheme.Light" />
         <activity
             android:name=".EditContactsActivity"
-            android:theme="@style/MaterialDrawerTheme" />
+            android:theme="@style/MaterialDrawerTheme.Light" />
         <activity
             android:name=".EditMessageActivity"
-            android:theme="@style/MaterialDrawerTheme"></activity>
+            android:theme="@style/MaterialDrawerTheme.Light"></activity>
     </application>
 
 </manifest>
