@@ -18,4 +18,31 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="single_line"
+        parent="AppTheme">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="single_line.large"
+        parent="AppTheme">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/grey_37474F</item>
+    </style>
+
+
+    <style name="single_line.medium"
+        parent="single_line">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grey_37474F</item>
+    </style>
+
+    <style name="single_line.small"
+        parent="single_line">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grey_37474F</item>
+    </style>
+
+
 </resources>
