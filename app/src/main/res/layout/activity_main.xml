@@ -13,18 +13,17 @@
         android:elevation="4dp"
         tools:ignore="UnusedAttribute" />
 
-    <FrameLayout
+    <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-        <TextView
-            android:id="@+id/crossfade_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Main activity"
-            android:textSize="16sp" />
-    </FrameLayout>
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/search_form_button"
+        android:text="SOS"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
 </RelativeLayout>
