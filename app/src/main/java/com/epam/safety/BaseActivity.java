@@ -1,6 +1,7 @@
 package com.epam.safety;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private Drawer result;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static final String MENU_EDIT_MESSAGE = "Edit message";
 
     private void initNavigationDrawer(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         //set the back arrow in the toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -118,7 +121,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }, 250);
+    }
 
-
+    public void setToolbarText(String text){
+        toolbar.setTitle(text);
     }
 }

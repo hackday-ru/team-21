@@ -14,11 +14,9 @@
         android:name=".SafetyApplication">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MaterialDrawerTheme.Light"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,15 +27,12 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/MaterialDrawerTheme.Light"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".EditContactsActivity"
-            android:theme="@style/MaterialDrawerTheme.Light"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".EditMessageActivity"
-            android:theme="@style/MaterialDrawerTheme.Light"
             android:screenOrientation="portrait"></activity>
     </application>
 

@@ -17,6 +17,7 @@ public class EditMessageActivity extends BaseActivity {
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
         initViews();
+        setToolbarText("Edit message");
     }
 
     @Override

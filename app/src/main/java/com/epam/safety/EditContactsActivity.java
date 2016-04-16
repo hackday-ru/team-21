@@ -31,7 +31,7 @@ public class EditContactsActivity extends BaseActivity implements ContactsAdapte
         setupFab();
         initRecyclerView();
         loadContactsFromStorage();
-
+        setToolbarText("Edit contacts");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EditContactsActivity extends BaseActivity implements ContactsAdapte
 
     private void initToolbar(){
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        toolbarLayout.setTitle("Contacts list");
+        toolbarLayout.setTitle("Contacts");
     }
 
     public void setupFab() {
