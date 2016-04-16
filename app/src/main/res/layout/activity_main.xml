@@ -15,8 +15,65 @@
         android:elevation="4dp"
         tools:ignore="UnusedAttribute" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:id="@+id/time_container"
+        android:visibility="invisible">
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            card_view:cardCornerRadius="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="16dp">
+
+
+                <TextView
+                    android:id="@+id/sosMessageTitle"
+                    style="@style/single_line.large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SOS Message will be sent in" />
+
+                <TextView
+                    android:id="@+id/timer_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/sosMessageTitle"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:textSize="52sp"
+                    android:text="00:00"
+                    android:gravity="center"/>
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_below="@id/timer_text"
+                    android:background="@drawable/search_form_button"
+                    android:text="Cancel"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_sos"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"

@@ -7,17 +7,32 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity {
 
     private static final String FIRST_START = "first_start3";
+
+    private static final int DURATION_MILLIS = 10_000;
+
+    private TextView timerText;
+    private CounterClass timer;
+    private Animation animationFadeIn;
+    private Animation animationFadeOut;
+    private FrameLayout timerContainer;
 
     @Override
     int getLayoutResource() {
@@ -27,7 +42,21 @@ public class MainActivity extends BaseActivity {
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
         launchIntoActivityIfFirstLaunch();
+        initTimerContainer();
+        initTimer();
         initSosButton();
+        initCancelButton();
+        initAnimations();
+
+    }
+
+    private void initTimerContainer(){
+        timerContainer = (FrameLayout) findViewById(R.id.time_container);
+    }
+
+    private void initAnimations() {
+        animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fadeout);
     }
 
     private void launchIntoActivityIfFirstLaunch() {
@@ -49,18 +78,40 @@ public class MainActivity extends BaseActivity {
         t.start();
     }
 
+    private void initTimer() {
+        timerText = (TextView) findViewById(R.id.timer_text);
+        timer = new CounterClass(DURATION_MILLIS, 1000);
+    }
+
     private void initSosButton() {
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button_sos).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContactsEntity contactsEntity = SafetyApplication.getContactsStorageService().loadContactsFromStorage();
-                List<ContactWithPhoneEntity> contacts = contactsEntity.getContactWithPhoneEntityList();
-                for (ContactWithPhoneEntity c : contacts) {
-                    sendSMSMessage(c.getContactNumber(), SafetyApplication.getContactsStorageService().getMessage());
-                }
-
+                timerContainer.startAnimation(animationFadeIn);
+                timerContainer.setVisibility(View.VISIBLE);
+                timer.start();
             }
         });
+    }
+
+    private void initCancelButton() {
+        findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timer.cancel();
+                timerContainer.startAnimation(animationFadeOut);
+                timerContainer.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private int sendMessagesToAllRecipients() {
+        ContactsEntity contactsEntity = SafetyApplication.getContactsStorageService().loadContactsFromStorage();
+        List<ContactWithPhoneEntity> contacts = contactsEntity.getContactWithPhoneEntityList();
+        for (ContactWithPhoneEntity c : contacts) {
+            sendSMSMessage(c.getContactNumber(), SafetyApplication.getContactsStorageService().getMessage());
+        }
+        return contacts.size();
     }
 
     protected void sendSMSMessage(String phone, String message) {
@@ -93,5 +144,32 @@ public class MainActivity extends BaseActivity {
         }
         return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
     }
+
+    public class CounterClass extends CountDownTimer {
+        public CounterClass(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onFinish() {
+            int count = sendMessagesToAllRecipients();
+            timerContainer.startAnimation(animationFadeOut);
+            timerContainer.setVisibility(View.INVISIBLE);
+            String msg = String.format("Message sent to %s recipients", count);
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            long millis = millisUntilFinished;
+            String hms = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+            timerText.setText(hms);
+        }
+    }
+
 
 }
