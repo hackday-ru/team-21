@@ -18,6 +18,9 @@ public final class IntroActivity  extends AppIntro2 {
     public void init(Bundle savedInstanceState) {
         addSlide(IntroSlide.newInstance(R.layout.intro1));
         addSlide(IntroSlide.newInstance(R.layout.intro2));
+        addSlide(IntroSlide.newInstance(R.layout.intro3));
+        addSlide(IntroSlide.newInstance(R.layout.intro4));
+
     }
 
     private void loadMainActivity(){

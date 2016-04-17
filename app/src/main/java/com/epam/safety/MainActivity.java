@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends BaseActivity implements BlurLockView.OnPasswordInputListener,
         BlurLockView.OnLeftButtonClickListener{
 
-    private static final String FIRST_START = "first_start12";
+    private static final String FIRST_START = "first_start13";
 
     private static final int DURATION_MILLIS = 10_000;
 
