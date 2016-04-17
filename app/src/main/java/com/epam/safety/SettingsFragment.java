@@ -55,7 +55,7 @@ public class SettingsFragment extends PreferenceFragment {
         final int maxSosDelaySeconds = 15;
 
         Dialog dialog = new Dialog(preference.getContext());
-        dialog.setTitle("SOS delay (seconds)");
+        dialog.setTitle("Таймер отмены (в секундах)");
         dialog.setContentView(R.layout.dialog_sos_delay);
 
         NumberPicker delayPicker = (NumberPicker) dialog.findViewById(R.id.delay_picker);
@@ -83,7 +83,7 @@ public class SettingsFragment extends PreferenceFragment {
     private void ShowCancellationPinDialog(Preference preference)
     {
         Dialog dialog = new Dialog(preference.getContext());
-        dialog.setTitle("Cancellation PIN");
+        dialog.setTitle("PIN для отмены");
         dialog.setContentView(R.layout.dialog_cancellation_token);
 
         Button setButton = (Button) dialog.findViewById(R.id.set_button);

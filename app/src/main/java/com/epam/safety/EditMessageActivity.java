@@ -17,7 +17,7 @@ public class EditMessageActivity extends BaseActivity {
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
         initViews();
-        setToolbarText("Edit message");
+        setToolbarText("Редактирование сообщения");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class EditMessageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 SafetyApplication.getSharedPreferencesService().saveMessage(editText.getText().toString());
-                Toast.makeText(EditMessageActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditMessageActivity.this, "Сообщение сохранено", Toast.LENGTH_SHORT).show();
             }
         });
     }

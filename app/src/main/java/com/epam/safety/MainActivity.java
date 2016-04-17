@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
 
     @Override
     void onCreateLayout(Bundle savedInstanceState) {
-        launchIntoActivityIfFirstLaunch();
+//        launchIntoActivityIfFirstLaunch();
         initTimer();
         initSosButton();
         initAnimations();
@@ -83,24 +83,24 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
         animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fadeout);
     }
 
-    private void launchIntoActivityIfFirstLaunch() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferences getPrefs = PreferenceManager
-                        .getDefaultSharedPreferences(getBaseContext());
-                boolean isFirstStart = getPrefs.getBoolean(FIRST_START, true);
-                if (isFirstStart) {
-                    Intent i = new Intent(MainActivity.this, IntroActivity.class);
-                    startActivity(i);
-                    SharedPreferences.Editor e = getPrefs.edit();
-                    e.putBoolean(FIRST_START, false);
-                    e.apply();
-                }
-            }
-        });
-        t.start();
-    }
+//    private void launchIntoActivityIfFirstLaunch() {
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                SharedPreferences getPrefs = PreferenceManager
+//                        .getDefaultSharedPreferences(getBaseContext());
+//                boolean isFirstStart = getPrefs.getBoolean(FIRST_START, true);
+//                if (isFirstStart) {
+//                    Intent i = new Intent(MainActivity.this, IntroActivity.class);
+//                    startActivity(i);
+//                    SharedPreferences.Editor e = getPrefs.edit();
+//                    e.putBoolean(FIRST_START, false);
+//                    e.apply();
+//                }
+//            }
+//        });
+//        t.start();
+//    }
 
     private void initTimer() {
         timerText = (TextView) findViewById(R.id.timer_text);
@@ -149,9 +149,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
         try {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phone, null, concatMessageWithLocation(message, getLastKnownLocationAsString()), null, null);
-            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "SMS faild, please try again.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
@@ -202,7 +200,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
     @Override
     public void incorrect(String inputPassword) {
         Toast.makeText(this,
-                "Incorrect",
+                "Неверный PIN",
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -220,7 +218,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
             int count = sendMessagesToAllRecipients();
             timerText.startAnimation(animationFadeOut);
             timerText.setVisibility(View.INVISIBLE);
-            String msg = String.format("Message sent to %s recipients", count);
+            String msg = String.format("Сообщения отправлены %s получателям", count);
             Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
             stateRunning = false;
             sosButton.setText("SOS");

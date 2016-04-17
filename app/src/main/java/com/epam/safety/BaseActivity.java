@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static final int POSITION_EDIT_CONTACTS = 2;
     private static final int POSITION_EDIT_MESSAGE = 3;
 
-    private static final String MENU_HOME = "Домой";
+    private static final String MENU_HOME = "Главная";
     private static final String MENU_SETTINGS = "Настройки";
     private static final String MENU_EDIT_CONTACTS = "Контакты";
     private static final String MENU_EDIT_MESSAGE = "Сообщение";
@@ -118,6 +118,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void setToolbarText(String text) {
-        toolbar.setTitle(text);
+        getSupportActionBar().setTitle(text);
     }
 }

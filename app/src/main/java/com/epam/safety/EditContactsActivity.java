@@ -41,7 +41,7 @@ public class EditContactsActivity extends BaseActivity implements ContactsAdapte
 
     private void initToolbar(){
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        toolbarLayout.setTitle("Contacts");
+        toolbarLayout.setTitle("Список получателей");
     }
 
     public void setupFab() {

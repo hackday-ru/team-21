@@ -13,21 +13,24 @@
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/delay_picker"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="98dp"
-        android:layout_toRightOf="@+id/delay_picker"
-        android:text="Cancel" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:layout_height="45dp"
+        android:background="@drawable/change_message_button"
+        android:text="Отмена"
+        android:layout_marginLeft="64dp"/>
+
 
     <Button
         android:id="@+id/set_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cancel_button"
-        android:layout_alignBottom="@+id/cancel_button"
-        android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@+id/delay_picker"
-        android:text="Set" />
+        android:layout_height="45dp"
+        android:background="@drawable/change_message_button"
+        android:layout_alignParentBottom="true"
+        android:text="Сохранить"
+        android:textSize="14dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="64dp"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
