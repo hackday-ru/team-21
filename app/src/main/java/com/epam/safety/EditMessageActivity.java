@@ -28,11 +28,11 @@ public class EditMessageActivity extends BaseActivity {
 
     private void initViews() {
         editText = (EditText) findViewById(R.id.editText);
-        editText.setText(SafetyApplication.getContactsStorageService().getMessage());
+        editText.setText(SafetyApplication.getSharedPreferencesService().getMessage());
         findViewById(R.id.button_sos).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SafetyApplication.getContactsStorageService().saveMessage(editText.getText().toString());
+                SafetyApplication.getSharedPreferencesService().saveMessage(editText.getText().toString());
                 Toast.makeText(EditMessageActivity.this, "Saved", Toast.LENGTH_SHORT).show();
             }
         });

@@ -12,4 +12,8 @@ public interface SharedPreferencesService {
     void saveMessage(String message);
 
     String getMessage();
+
+    void savePassword(String password);
+
+    String getPassword();
 }

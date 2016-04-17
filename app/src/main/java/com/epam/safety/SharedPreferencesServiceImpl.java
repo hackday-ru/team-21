@@ -13,6 +13,8 @@ public class SharedPreferencesServiceImpl implements SharedPreferencesService {
     private static final String DEFAULT_MESSAGE = "I am in danger";
     private static final String PREF_CONTACTS_LIST = "contactsList";
     private static final String PREF_MESSAGE = "message";
+    private static final String PREF_PASSWORD = "password";
+    private static final String DEFAULT_PASSWORD = "1234";
 
     private Context context;
 
@@ -42,6 +44,16 @@ public class SharedPreferencesServiceImpl implements SharedPreferencesService {
 
     public String getMessage() {
         return getString(PREF_MESSAGE, DEFAULT_MESSAGE);
+    }
+
+    @Override
+    public void savePassword(String password) {
+        putString(PREF_PASSWORD, password);
+    }
+
+    @Override
+    public String getPassword() {
+        return getString(PREF_PASSWORD, DEFAULT_PASSWORD);
     }
 
     private SharedPreferences getSharedPreferences() {

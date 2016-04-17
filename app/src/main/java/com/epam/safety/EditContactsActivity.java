@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.Toast;
 
 public class EditContactsActivity extends BaseActivity implements ContactsAdapter.ItemRemovedListener {
 
@@ -103,7 +102,7 @@ public class EditContactsActivity extends BaseActivity implements ContactsAdapte
     private void loadContactsFromStorage() {
         contactsAdapter.setItems(
                 SafetyApplication
-                        .getContactsStorageService()
+                        .getSharedPreferencesService()
                         .loadContactsFromStorage()
                         .getContactWithPhoneEntityList()
         );
@@ -116,7 +115,7 @@ public class EditContactsActivity extends BaseActivity implements ContactsAdapte
         ContactsEntity contactsEntity = new ContactsEntity();
         contactsEntity.setContactWithPhoneEntityList(contactsAdapter.getItems());
         SafetyApplication
-                .getContactsStorageService()
+                .getSharedPreferencesService()
                 .saveContactsToStorage(contactsEntity);
     }
 

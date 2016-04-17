@@ -23,7 +23,7 @@ public class SafetyApplication extends Application {
         sharedPreferencesService = new SharedPreferencesServiceImpl(this);
     }
 
-    public static SharedPreferencesService getContactsStorageService(){
+    public static SharedPreferencesService getSharedPreferencesService(){
         return getInstance().sharedPreferencesService;
     }
 
