@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
 
     private void initTimer() {
         timerText = (TextView) findViewById(R.id.timer_text);
-        timer = new CounterClass(DURATION_MILLIS, 1000);
+        timer = new CounterClass(SafetyApplication.getSharedPreferencesService().getDelay()*1000, 1000);
     }
 
     private void showPinPad(){
@@ -140,7 +140,7 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
         ContactsEntity contactsEntity = SafetyApplication.getSharedPreferencesService().loadContactsFromStorage();
         List<ContactWithPhoneEntity> contacts = contactsEntity.getContactWithPhoneEntityList();
         for (ContactWithPhoneEntity c : contacts) {
-            //sendSMSMessage(c.getContactNumber(), SafetyApplication.getSharedPreferencesService().getMessage());
+            sendSMSMessage(c.getContactNumber(), SafetyApplication.getSharedPreferencesService().getMessage());
         }
         return contacts.size();
     }

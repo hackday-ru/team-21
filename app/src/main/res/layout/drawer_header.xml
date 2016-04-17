@@ -12,6 +12,6 @@
         android:adjustViewBounds="true"
         android:orientation="vertical"
         android:scaleType="fitCenter"
-        android:src="@drawable/logo"></ImageView>
+        android:src="@drawable/menu_logo"></ImageView>
 
 </FrameLayout>

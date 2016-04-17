@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import com.epam.safety.R;
+import com.epam.safety.SafetyApplication;
 
 public class SosDelayDialogSetButtonListener implements View.OnClickListener {
 
@@ -27,6 +28,10 @@ public class SosDelayDialogSetButtonListener implements View.OnClickListener {
         }
 
         preference.setSummary(pickedDelay + units);
+
+
+        SafetyApplication.getSharedPreferencesService().saveDelay(pickedDelay);
+
         dialog.dismiss();
     }
 }

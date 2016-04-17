@@ -16,4 +16,8 @@ public interface SharedPreferencesService {
     void savePassword(String password);
 
     String getPassword();
+
+    void saveDelay(int delay);
+
+    int getDelay();
 }

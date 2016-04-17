@@ -56,6 +56,16 @@ public class SharedPreferencesServiceImpl implements SharedPreferencesService {
         return getString(PREF_PASSWORD, DEFAULT_PASSWORD);
     }
 
+    @Override
+    public void saveDelay(int delay) {
+        getSharedPreferences().edit().putInt("delay", delay).commit();
+    }
+
+    @Override
+    public int getDelay() {
+        return getSharedPreferences().getInt("delay", 10);
+    }
+
     private SharedPreferences getSharedPreferences() {
         return context.getSharedPreferences("com.epam.safety", Context.MODE_PRIVATE);
     }
