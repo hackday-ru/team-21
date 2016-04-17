@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.epam.safety.eventListeners.CancellationTokenDialogSetButtonListener;
 import com.epam.safety.eventListeners.DialogCancelButtonListener;
@@ -92,6 +93,15 @@ public class SettingsFragment extends PreferenceFragment {
         CancellationTokenDialogSetButtonListener cancellationTokenDialogSetButtonListener = new CancellationTokenDialogSetButtonListener(){
             @Override
             public void onClick(View v) {
+                String oldPass = SafetyApplication.getSharedPreferencesService().getPassword();
+
+                String oldPassInForm = ((EditText)dialog.findViewById(R.id.old_pin)).getText().toString();
+
+                if (!oldPass.equals(oldPassInForm)){
+                    Toast.makeText(SettingsFragment.this.getActivity(), "Неправильный старый PIN", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 EditText newPin = (EditText)dialog.findViewById(R.id.new_pin);
                 SafetyApplication.getSharedPreferencesService().savePassword(newPin.getText().toString());
                 dialog.dismiss();
