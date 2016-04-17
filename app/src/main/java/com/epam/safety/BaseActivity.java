@@ -37,10 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static final int POSITION_EDIT_CONTACTS = 2;
     private static final int POSITION_EDIT_MESSAGE = 3;
 
-    private static final String MENU_HOME = "Home";
-    private static final String MENU_SETTINGS = "Settings";
-    private static final String MENU_EDIT_CONTACTS = "Contacts";
-    private static final String MENU_EDIT_MESSAGE = "Message";
+    private static final String MENU_HOME = "Домой";
+    private static final String MENU_SETTINGS = "Настройки";
+    private static final String MENU_EDIT_CONTACTS = "Контакты";
+    private static final String MENU_EDIT_MESSAGE = "Сообщение";
 
     private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);

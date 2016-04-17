@@ -10,7 +10,7 @@ import com.google.gson.Gson;
  */
 public class SharedPreferencesServiceImpl implements SharedPreferencesService {
 
-    private static final String DEFAULT_MESSAGE = "I am in danger";
+    private static final String DEFAULT_MESSAGE = "Я в опасности";
     private static final String PREF_CONTACTS_LIST = "contactsList";
     private static final String PREF_MESSAGE = "message";
     private static final String PREF_PASSWORD = "password";
