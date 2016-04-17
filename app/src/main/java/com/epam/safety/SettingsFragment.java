@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 
 import com.epam.safety.eventListeners.CancellationTokenDialogSetButtonListener;
@@ -87,7 +89,14 @@ public class SettingsFragment extends PreferenceFragment {
         dialog.setContentView(R.layout.dialog_cancellation_token);
 
         Button setButton = (Button) dialog.findViewById(R.id.set_button);
-        CancellationTokenDialogSetButtonListener cancellationTokenDialogSetButtonListener = new CancellationTokenDialogSetButtonListener();
+        CancellationTokenDialogSetButtonListener cancellationTokenDialogSetButtonListener = new CancellationTokenDialogSetButtonListener(){
+            @Override
+            public void onClick(View v) {
+                EditText newPin = (EditText)dialog.findViewById(R.id.new_pin);
+                SafetyApplication.getSharedPreferencesService().savePassword(newPin.getText().toString());
+                dialog.dismiss();
+            }
+        };
         cancellationTokenDialogSetButtonListener.dialog = dialog;
         setButton.setOnClickListener(cancellationTokenDialogSetButtonListener);
 
@@ -95,7 +104,6 @@ public class SettingsFragment extends PreferenceFragment {
         DialogCancelButtonListener cancelButtonOnClickListener = new DialogCancelButtonListener();
         cancelButtonOnClickListener.dialog = dialog;
         cancelButton.setOnClickListener(cancelButtonOnClickListener);
-
         dialog.show();
     }
 }

@@ -13,7 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:text="Настройки"/>
 
     <fragment
         android:name="com.epam.safety.SettingsFragment"
