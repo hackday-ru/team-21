@@ -58,6 +58,8 @@ public class MainActivity extends BaseActivity implements BlurLockView.OnPasswor
     private void initBlurImageView(){
         blurLockView = (BlurLockView)findViewById(R.id.blurlockview);
         blurLockView.setBlurredView(findViewById(R.id.background_image));
+        blurLockView.setBlurRadius(25);
+        blurLockView.setDownsampleFactor(25);
         blurLockView.setCorrectPassword(SafetyApplication.getSharedPreferencesService().getPassword());
         blurLockView.setTitle("Title");
         blurLockView.setLeftButton("Cancel");
